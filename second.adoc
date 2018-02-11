@@ -1,0 +1,169 @@
+== ui
+
+
+=== dataui
+
+[source, json]
+----
+{
+  ""
+}
+----
+
+компоненты имеют ооп иерархию
+
+есть компоненты поля а есть твики окна (например, чтобы окно содержало поиск)
+
+== Библиотека блоков
+
+=== Единичные экземпляры
+Поле ввода
+Списковое представление - select
+Списковое представление - grouped single select(может не выделять его в о?)
+Списковое представление - multiselect
+Списковое представление - grouped multi select(может не выделять его в о?)
+Медиафайл
+
+=== Коллекции
+Любой из верхнего списка может быть тут
+
+нужна концепция обьединения блоков и продумать как она будет храниться
+
+списковые представления должны уметь цепляться к какой-нибудь таблице или если обязательно онлайн - то endpoint
+
+отображение и редактирование - 2 разных вида для ui
+
+=== Про стейты
+для enabled-condition обязательно должны идти текстовоы описания что не так.
+поле не активно и должна быть подсказка - что делать, чтобы оно стало активным.
+
+== field
+
+[source, json]
+----
+{
+  "name":"unique_identificator_for_field",<1>
+  "based_on_field":"должно совпадать по типу",
+  "title":"В зависимости от типа поля, title в UI может не отображаться как header. Но поле обязательное, так как может быть высвечено в справочных окнах",
+  "info":{
+    "text":"short field description",
+    "description":"optional full faq for this field"
+  },
+  "type":"list",
+  "typeSettings":{
+    //тут должны быть логические настройки. Типа numericPad все заглавные или еще что-то вроде этого
+    // но не должно быть настроек apperance. Типа цвет клавы и прочее.
+  },
+  "tagsForSearch":[],
+  "source":{},
+  "initValue":"val or val object",
+  "defaultValue":"val or val object if pipeline failed",
+  "preWorkCmd":"cmd or inserting value",
+  "postWorkCmd":"cmd or inserting value",
+  "bind":"field.internalValue",
+  "validConditions":[
+    {
+      "condition":"pseudo rule",
+      "onFail":{
+        "text":"short fail explanation",
+        "description":"optional full faq for error"
+      }
+    }
+  ],
+  "visibleConditions":[
+    {
+      "condition":"pseudo rule like field1 == 'done'",
+      "onFail":{
+        "text":"short explanation when this control will be visible",
+        "description":"optional full faq for error"
+      }
+    }
+  ],
+  "editableConditions":[
+    {
+      "condition":"pseudo rule when user can edit control",
+      "onFail":{
+        "text":"short explanation about thus rule",
+        "description":"optional full explanation why this control cant be edited"
+      }
+    }
+  ],
+  "requiredConditions":[
+    {
+      "condition":"pseudo rule when user can edit control",
+      "onFail":{
+        "text":"short explanation about thus rule",
+        "description":"optional full explanation why this control cant be edited"
+      }
+    }
+  ],
+  "clearTriggers":[
+    {
+      "f":"fieldName1",
+      "condition":"pseudo rule",
+      "reason":"description why this field must be cleared"
+    },
+    {
+      "f":"fieldName2",
+      "condition":"pseudo rule",
+      "reason":"description why this field must be cleared"
+    }
+  ]
+}
+
+----
+<1> ffff
+source
+
+
+
+
+== field life pipeline
+
+initialization -> initValue -> preWorkCmd -> *work* -> postWorkCmd -> defaultValue -> requirementsCheck -> upload
+
+initValue - значение с которым инициализируется поле
+preWorkCmd - команда для поля выполнить определенную работу, чтобы срезолвить свое значение самостоятельно.
+Например для поля location, срезолвить текущее местоположение. Только при отсутствии значения в initValue и до установки значения руками (work)
+work - непосредственно само взаимодействие пользователя с интерфейсом
+postWorkCmd - аналогично preWorkCmd, если значение все еще не было установлено.
+defaultValue - если установлено, и если все еще нет значения, то устанавливается defaultValue
+
+
+Note/ postWorkCmd не имеет timeout. До тех пор пока не найдет значение или пользователь не отменит операцию.
+Хотя timeout можно куда-нибудь либо зашить либо в json вынести.
+
+Note/ в preWorkCmd могут помещаться такие команды, как insertFavorite, если поле ведет статистику часто используемых значений.
+
+== Conditions
+Все conditions это массив. между ними применяется условие OR
+onFail text и description будут заполняться, чтобы пользователь на месте мог получить разяснения от системы на попросы почему?
+почему нет поля
+почему обязательное
+почему не редактируется
+почему не устраивает ввод
+
+в приложении будут места, где можно будет посмотеть короткое указание в чем дело из поля text и очень подробное описание с указанием как исправить из поля description.
+В UI создания
+
+clearTriggers - перечисляются uniqueIdentificators полей, изменения по которым прослушиваются. Если необходимо указывается условие, при котором триггер должен сработать
+
+bind - это свойство может применяться только для полей не editable
+
+
+
+
+== Не забыть
+
+Поле может содержать изначально не валидные данные.
+но по возможности их нужно отобразить(хотя можно и не отображать)
+но самое главное, это поле должно рапортовать о том, что содержит значение такое-то, которое не удовлетворяет условию. такому то.
+необходимо это значение заменить на валидное введя его.
+нюансы:
+1) информация об этом, должна вылезать до уровня всего окна(задачи/xdata) и отображаться в виде предупреждения. Некоторые поля требуют внимания. Другими словами гдето в топе алерт, плюс еще и само поле должно покраситься.
+2) Наличие проблемы с полем, не должно быть причиной блокировки интерфейса. С другими полями работать можно, игнорируя эту ошибку.
+
+
+При отправке значений на сервер, может случиться, что field который отправляешь не существует. или случилась какая-то ошибка в бд. В этом случае сервер должен обработать internal error
+и написать в тексте ошибке пользователю, удали свои ожидающие изменения.
+Для этог в клиентах должна быть функция откатить/удалить ожидающие изменения.
