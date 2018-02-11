@@ -6,6 +6,10 @@ table of contents is good
 
 sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm
 
+include::/gen/one.adoc[]
+
+include::gen/one.adoc[]
+
 = ttim
  fefef erefe 
  
