@@ -1,0 +1,259 @@
+= first
+
+table of contents is good 
+
+== erer
+
+sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm
+
+= ttim
+ fefef erefe 
+ 
+sdfdfdf efgdgdgg sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm sdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkmsdfljslfkkl sldkflsdkfmlksmf lksdmflksdmflks lksdmflksdmflkm
+
+== Создание сущности из шаблона
+
+ POST /entities
+
+[cols="1,1",options="header]
+|===
+|Request|Response 200
+a|
+[source, json]
+----
+{
+  "templateId":15
+}
+----
+a|
+[source, json]
+----
+{
+  "id":3
+}
+----
+|===
+
+== Создание сущности с нуля
+
+ POST /entities
+
+[cols="1,1",options="header]
+|===
+|Request|Response 200
+a|
+[source, json]
+----
+{
+  "name":"То что пользователь ввел в предыдущем окне"
+}
+----
+a|
+[source, json]
+----
+{
+  "id":3
+}
+----
+|===
+
+== Удаление сущности
+
+ DELETE /entities/{id}
+
+Помечает сущность удаленной.
+Теперь ее не будет в списке сущностей, но данные созданные по этому интерфейсу(сущности) продолжают существовать.
+404 если сущности нет в базе
+200 если удалили. даже когда она уже была удалена. запросы delete подряд будут возвращать 200
+
+== Получение всех имеющихся сущностей
+ GET /entities/
+[source, json]
+----
+[
+  {
+    "id":4,
+    "deleted":false,
+    "systemComment":"Four entity",
+    "tc":1517321982259,
+    "authorId":1,
+    "revision":11
+  }
+]
+----
+Показывает только активные, не удаленные сущности
+опциональные параметры deleted=true
+revision после создания 0, увеличивается, когда происходит модификация любых данных по этой сущности
+
+
+= Конфигурирование сущности (Item UI)
+
+== Конфигурирование основной информации по сущности
+
+Нужно навязывать поддержку английского языка. +
+Поэтому в этом окне сказать, что по умолчанию используем связку ru + en языки. ru по дефолту. +
+если откажется, то потом вид, где отговариваем от этой идеи, говорим что будем помогать автопереводами + можно заполнить позже.
+Но если нет, то можно оставить только ru. В этой ветке окон можно будет выбрать языки.
+Первый язык будет дефолтным. (Далее это используется)  добавить/ввести любой другой язык.
+
+Далее предлагаем сконфигурировать интерфейс для нашей сущности. +
+Тут нужно будет воспользоваться сторонним сервисом для склонения и переводов слов. +
+Написать что-то вроде следующего:
+Система позволит вам Создавать, просматривать/изменять и удалять(CRUD) ваши $entity +
+Как будет выглядеть Ваш интерфейс: +
+Что вписать в заголовок окна при создании заказа? [создание заказа] - в полях ввода уже есть заготовки, пользователь может их поправить +
+Что должно быть в заголовке при просмотре заказа? [Удаление Заказ] +
+
+ Тексты ru/en зашиваются в приложении. +
+ пользователю предлагается ввести разные языки +
+ (остановиться пока только на en) +
+ поля ввода друг под другом +
+ ru:[] +
+ en[] +
+
+
+
+=== Заполняем данные сущности
+
+Тексты
+
+ POST /entities/{id}/info
+
+[cols="1,1",options="header]
+|===
+|Request|Response 200
+a|
+[source, json]
+----
+{
+  "titles":{
+    "singular":{
+     "ru":"Заявка",
+     "en":"Order"
+   },
+   "plural":{
+     "ru":"Заявки",
+     "en":"Orders"
+   },
+   "create":{
+     "ru":"Создание заявки",
+     "en":"Create an order"
+   },
+   "delete":{
+     "ru":"Удалить заявку",
+     "en":"Delete the order"
+   }
+ }
+}
+----
+a|
+[source, json]
+----
+{
+  "revision":10,
+  "entityId":4,
+  "tc":1517395130348,
+  "authorId":1,
+  "xinfo":{
+    "titles":{
+      "create":{
+        "en":"Create an order",
+        "ru":"Создание заявки"
+      },
+      "delete":{
+        "en":"Delete the order",
+        "ru":"Удалить заявку"
+      },
+      "plural":{
+        "en":"Orders",
+        "ru":"Заявки"
+      },
+      "singular":{
+        "en":"Order",
+        "ru":"Заявка"
+      }
+    }
+  }
+}
+----
+|===
+
+ POST /entities/{id}/view/
+
+=== Получение списка всех сущностей с информацией по ним
+ GET /entities
+[source, json]
+----
+[
+  {
+      "bodyInArray":"body1"
+  }
+]
+----
+
+=== Изменение данных сущности
+
+NOTE: В системе все версионируется, поэтому кажное изменение - это новая версия данных.
+По этой причине первое заполнение и изменения данных с точки зрения Api не отличаются
+Нужно получить текущую версию, внести правки и отправить новую версию через запрос  заполнения
+
+
+== Какие поля будут в интерфейсе?
+
+Интерфейс в сервисе можно настраивать достаточно сложным образом,
+но делать это я предлагаю через интерфейс редактирования в расширенном PRO виде.
+тут же, самый простой вид, Который предлагает размещение полей друг за другом.
+
+В этом интерфейсе накидывать и удалять блоки полей. А так же перемещать их между собой.
+
+Если мы пришли в этот интерфейс из шаблона, он уже будет заполненным.
+Его нужно будет только редактировать и дополнять.
+
+В этом списке будут следующие возможности для манипуляции с блоками: +
+
+* удалять
+* редактировать
+* перемещать между собой
+* добавлять
+
+=== Получение разметки интерфейса
+
+ GET /entities/{id}/view
+
+=== Получение списка полей для интерфейса
+
+ GET /entities/{id}/uiblocks/{identifier}
+
+ === Получение списка полей для интерфейса
+
+  GET /entities/{id}/catalogs/{id}
+
+[source, json]
+----
+{
+ "entity":2,
+ "titles":{
+   "create":{
+     "ru":"Создание заявки",
+     "en":"Create an order"
+   },
+   "update":{
+     "ru":"Заявка",
+     "en":"Order"
+   },
+   "delete":{
+     "ru":"Удалить заявку",
+     "en":"Delete the order"
+   }
+ }
+}
+----
+[cols="1,2", options="header"]
+|===
+|Field
+|Info
+
+|name
+| #${id}
+
+|===
