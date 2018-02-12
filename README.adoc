@@ -1,18 +1,13 @@
-= xData API Documentation
+= Test links
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+endif::[]
 
-Документация пишется, редактируется и хранится на https://git.geo4.pro/xdata/apidocs[GitLab]. +
-Призываю к совместному ее редактированию с использованием инструментов git'a
+This content made for gitlab https://gitlab.com"[issue] 
 
-.Документация поделена не несколько частей:
-. Вводная
-.. <<about#,Основная информация о проекте и его структуре>>
-.. link:rules{outfilesuffix}[Перечень правил, которых придерживается система]
-. Описание API
-.. link:admin{outfilesuffix}[Документация API для админской части системы]
-.. link:operato.adoc[Документация API для пользовательской части системы]
+Theory described here https://github.com/asciidoctor/asciidoctor.org/blob/master/docs/_includes/xref-source-to-source.adoc[asciidoc docs] or here in http://asciidoctor.org/docs/faq/#how-do-i-make-relative-links-to-other-asciidoc-files-to-work-correctly-on-github[FAQ]
 
-== testadoc
+.Asciidoc provide several ways to make a Inter document cross reference: 
+. first <<refme#,link_example1>> 
+. second link:refme{outfilesuffix}[link_example2]
 
-askaslkdnaslkndasndk
-
-link:first.adoc[first]
+How this content rendered in link:github
