@@ -2,7 +2,7 @@
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 endif::[]
 
-This content made for gitlab https://gitlab.com"[issue] 
+This content made for gitlab https://gitlab.com/gitlab-org/gitlab-ce/issues/43192[issue] 
 
 Theory described here https://github.com/asciidoctor/asciidoctor.org/blob/master/docs/_includes/xref-source-to-source.adoc[asciidoc docs] or here in http://asciidoctor.org/docs/faq/#how-do-i-make-relative-links-to-other-asciidoc-files-to-work-correctly-on-github[FAQ]
 
@@ -10,4 +10,4 @@ Theory described here https://github.com/asciidoctor/asciidoctor.org/blob/master
 . first <<refme#,link_example1>> 
 . second link:refme{outfilesuffix}[link_example2]
 
-How this content rendered in link:github
+How this content rendered in https://github.com/nailgilaziev/testadoc/blob/master/README.adoc[github]
