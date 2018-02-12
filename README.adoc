@@ -1,6 +1,4 @@
 = xData API Documentation
-ifdef::env-github,env-browser[:outfilesuffix: .adoc]
-endif::[]
 
 Документация пишется, редактируется и хранится на https://git.geo4.pro/xdata/apidocs[GitLab]. +
 Призываю к совместному ее редактированию с использованием инструментов git'a
